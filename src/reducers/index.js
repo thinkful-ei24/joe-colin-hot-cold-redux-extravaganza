@@ -20,6 +20,8 @@ function feedbackGiver(guess, correctAnswer) {
     return "You're Warm.";
   } else if (difference >= 1) {
     return "You're Hot!";
+  } else {
+    return "you won. !"
   }
 }
 
@@ -27,14 +29,10 @@ function feedbackGiver(guess, correctAnswer) {
 export default (state = initialState, action) => {
   //*************** handle new guesses ****************
   if(action.type === NEW_GUESS) {
-
-    if(state.guess.find(item => item === action.guess)) {
+    console.log(state);
+    if(state.guesses.find(item => item === action.guess)) {
       return Object.assign({}, state, {
         feedback: 'You already guessed that number'
-      })
-    } else if(action.guess === state.correctAnswer){
-      return Object.assign({}, state, {
-        feedback: 'You guessed it! Good job'
       })
     } else {
       return Object.assign({}, state, {
@@ -45,7 +43,9 @@ export default (state = initialState, action) => {
   }
   // ***************** handle new game *******************
   if(action.type === NEW_GAME) {
-    return Object.assign({}, initialState)
+    return Object.assign({}, initialState, {
+      correctAnswer: Math.floor(Math.random() * 100) + 1
+    })
     //if problems, reassign correctAnswer to the randomization equation
   }
   if(action.type === GENERATE_AURAL_UPDATE) {
